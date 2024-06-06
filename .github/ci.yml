@@ -1,0 +1,76 @@
+name: CI/CD Pipeline 🚀
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  check-pr-name:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code 🛠️
+        uses: actions/checkout@v2
+      - name: Check PR name format 📝
+        run: |
+          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          if [[ ! "$PR_TITLE" =~ ^(feat|fix|bug)/ ]]; then
+            echo "PR title does not follow the required format! ❌"
+            exit 1
+          else
+            echo "PR title format is correct! ✅"
+          fi
+
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code 🛠️
+        uses: actions/checkout@v2
+      - name: Set up JDK 11 ☕
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Build with Gradle 🚀
+        run: ./gradlew build
+      - name: Run tests 🧪
+        run: ./gradlew test
+
+  update-changelog:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout code 🛠️
+        uses: actions/checkout@v2
+      - name: Update Changelog 📜
+        run: |
+          echo "Updating changelog..."
+          # Command to update changelog, e.g., using a CLI tool
+          # For example:
+          # npm install -g conventional-changelog-cli
+          # conventional-changelog -p angular -i CHANGELOG.md -s
+
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code 🛠️
+        uses: actions/checkout@v2
+      - name: Set up JDK 11 ☕
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Build with Gradle 🚀
+        run: ./gradlew build
+      - name: Deploy to Production 🌐
+        run: |
+          echo "Deploying to production..."
+          # Commands to deploy the application to production
+          # For example:
+          # scp -r ./build/libs/*.jar user@server:/path/to/deploy/
+          # ssh user@server 'systemctl restart your-app-service'
