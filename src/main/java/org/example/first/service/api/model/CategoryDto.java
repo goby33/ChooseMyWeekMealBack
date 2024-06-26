@@ -1,18 +1,18 @@
 package org.example.first.service.api.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 /**
- * DTO for {@link org.example.first.service.client.entity.Unit}
+ * DTO for {@link org.example.first.service.client.entity.Category}
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class UnitDto implements Serializable {
+public class CategoryDto implements Serializable {
     private Integer id;
+    @NotNull
     private String name;
 }

@@ -6,6 +6,9 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -27,5 +30,8 @@ public class Recipe {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @OneToMany(mappedBy = "recipe")
+    private Set<RecipeIngredient> recipeIngredients = new LinkedHashSet<>();
 
 }

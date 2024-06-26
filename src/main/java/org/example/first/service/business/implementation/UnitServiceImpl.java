@@ -19,28 +19,32 @@ public class UnitServiceImpl implements UnitService {
 
     public List<UnitDto> findAll() {
         List<Unit> units = unitRepository.findAll();
-        return units.stream().map(unit -> new UnitDto(unit.getName())).collect(Collectors.toList());
+        return units.stream().map(unit -> new UnitDto(unit.getId(), unit.getName())).collect(Collectors.toList());
     }
 
     public UnitDto findById(Integer unitId) {
         Optional<Unit> unit = unitRepository.findById(unitId);
-        return unit.map(value -> new UnitDto(value.getName())).orElse(null);
+        return unit.map(value -> new UnitDto(value.getId(), value.getName())).orElse(null);
     }
 
     public UnitDto create(UnitDto unitDto) {
+        // sheck if unit name is already in the database
+        if (unitRepository.findByName(unitDto.getName()).isPresent()) {
+            return null;
+        }
         Unit unit = new Unit();
-        unit.setName(unitDto.name());
-        unitRepository.save(unit);
-        return new UnitDto(unit.getName());
+        unit.setName(unitDto.getName());
+        Unit responseUnit = unitRepository.save(unit);
+        return new UnitDto(responseUnit.getId(), responseUnit.getName());
     }
 
     public UnitDto update(Integer unitId, UnitDto unitDto) {
         Optional<Unit> unit = unitRepository.findById(unitId);
         if (unit.isPresent()) {
             Unit unitToUpdate = unit.get();
-            unitToUpdate.setName(unitDto.name());
-            unitRepository.save(unitToUpdate);
-            return new UnitDto(unitToUpdate.getName());
+            unitToUpdate.setName(unitDto.getName());
+            Unit responseUnit =  unitRepository.save(unitToUpdate);
+            return new UnitDto(responseUnit.getId(), responseUnit.getName());
         }
         return null;
 

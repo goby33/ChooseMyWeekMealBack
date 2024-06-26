@@ -47,8 +47,8 @@ class UnitServiceImplTest {
 
         // Then
         assertEquals(2, unitDtos.size());
-        assertEquals("Unit1", unitDtos.get(0).name());
-        assertEquals("Unit2", unitDtos.get(1).name());
+        assertEquals("Unit1", unitDtos.get(0).getName());
+        assertEquals("Unit2", unitDtos.get(1).getName());
         verify(unitRepositoryMock, times(1)).findAll();
     }
 
@@ -65,7 +65,7 @@ class UnitServiceImplTest {
 
         // Then
         assertNotNull(unitDto);
-        assertEquals("Unit1", unitDto.name());
+        assertEquals("Unit1", unitDto.getName());
         verify(unitRepositoryMock, times(1)).findById(1);
     }
 
@@ -85,7 +85,7 @@ class UnitServiceImplTest {
     @Test
     void testCreateSuccess() {
         // Given
-        UnitDto unitDto = new UnitDto("Unit1");
+        UnitDto unitDto = new UnitDto(0,"Unit1");
         Unit unit = new Unit();
         unit.setName("Unit1");
 
@@ -96,14 +96,14 @@ class UnitServiceImplTest {
 
         // Then
         assertNotNull(unitDtoResult);
-        assertEquals("Unit1", unitDtoResult.name());
+        assertEquals("Unit1", unitDtoResult.getName());
         verify(unitRepositoryMock, times(1)).save(any(Unit.class));
     }
 
     @Test
     void testUpdateSuccess() {
         // Given
-        UnitDto unitDto = new UnitDto("Unit1");
+        UnitDto unitDto = new UnitDto(0,"Unit1");
         Unit unit = new Unit();
         unit.setName("OldName");
 
@@ -115,7 +115,7 @@ class UnitServiceImplTest {
 
         // Then
         assertNotNull(unitDtoResult);
-        assertEquals("Unit1", unitDtoResult.name());
+        assertEquals("Unit1", unitDtoResult.getName());
         verify(unitRepositoryMock, times(1)).findById(1);
         verify(unitRepositoryMock, times(1)).save(any(Unit.class));
     }
@@ -125,7 +125,7 @@ class UnitServiceImplTest {
         // Given
         when(unitRepositoryMock.findById(1)).thenReturn(Optional.empty());
 
-        UnitDto unitDto = new UnitDto("Unit1");
+        UnitDto unitDto = new UnitDto(0,"Unit1");
 
         // When
         UnitDto unitDtoResult = unitServiceMock.update(1, unitDto);

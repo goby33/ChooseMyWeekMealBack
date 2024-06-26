@@ -5,14 +5,14 @@ import org.example.first.service.api.model.UnitDto;
 import java.util.List;
 
 public interface UnitService {
-    public List<UnitDto> findAll();
+    List<UnitDto> findAll();
 
-    public UnitDto findById(Integer unitId);
+    UnitDto findById(Integer unitId);
 
-    public UnitDto create(UnitDto unitDto);
+    UnitDto create(UnitDto unitDto);
 
-    public UnitDto update(Integer unitId, UnitDto unitDto);
+    UnitDto update(Integer unitId, UnitDto unitDto);
 
-    public void delete(Integer unitId);
+    void delete(Integer unitId);
 
 }
