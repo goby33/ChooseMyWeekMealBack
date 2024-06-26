@@ -30,4 +30,9 @@ public class RecipeIngredient {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "unit_id")
+    private Unit unit;
+
 }
